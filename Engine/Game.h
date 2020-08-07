@@ -45,7 +45,7 @@ private:
 	/*  User Variables              */
 
 
-	Surface Surf = Surface( 100 , 100 );
+	Surface Surf = Surface("marle32x48.bmp");
 	/********************************/
-
+	
 };

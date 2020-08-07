@@ -26,6 +26,7 @@
 #include <string>
 #include <array>
 #include "Surface.h"
+#include"Colors.h"
 
 // Ignore the intellisense error "cannot open source file" for .shh files.
 // They will be created during the build sequence before the preprocessor runs.
@@ -325,6 +326,27 @@ void Graphics::DrawSprite(int x, int y, const Surface& s)
 
 		for (int sx = 0; sx < Width; sx++) {
 			PutPixel(x + sx, x + sy, s.GetPixel(sx, sy));
+		}
+	}
+
+}
+
+void Graphics::DrawSprite(int x, int y, const RectI & sourcerect, const Surface & s, const Color& chroma)
+{
+	assert(sourcerect.top >= 0);
+	assert(sourcerect.bottom <= s.GetHeight());
+	assert(sourcerect.left >= 0);
+	assert(sourcerect.right <= s.GetWidth());
+	
+	for (int sy = sourcerect.top; sy < sourcerect.bottom; sy++) {
+
+		for (int sx = sourcerect.left; sx < sourcerect.right; sx++) {
+
+			//Color chroma = Colors::Magenta;
+			const Color SrcColor = s.GetPixel(sx, sy);
+			if (SrcColor != chroma){
+				PutPixel(x + sx - sourcerect.left, y + sy - sourcerect.top,SrcColor);
+			}
 		}
 	}
 

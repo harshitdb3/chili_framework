@@ -1,10 +1,79 @@
 #include "Surface.h"
 #include <cassert>
+#include"ChiliWin.h"
+#include <fstream>
+#include<string>
 
 Surface::Surface(int Width, int Height)
 	:Width(Width), Height(Height), Ppixel( new Color[Width * Height])
 {
 
+}
+
+Surface::Surface(const std::string& s)
+{
+
+
+	std::ifstream BMPFileStruct;
+	assert(BMPFileStruct);
+	BITMAPFILEHEADER BMPFile;
+	BMPFileStruct.open(s, std::ios::binary);
+	BMPFileStruct.read(reinterpret_cast<char*>(&BMPFile), sizeof(BMPFile));
+
+	BITMAPINFOHEADER BmpInfo;
+	BMPFileStruct.read(reinterpret_cast<char*>(&BmpInfo), sizeof(BmpInfo));
+	{
+		Width = BmpInfo.biWidth;
+		int yStart;
+		int yend;
+		int dy;
+		if (BmpInfo.biHeight < 0)
+		{
+			Height = -BmpInfo.biHeight;
+			 yStart = 0;
+			 yend = Height;
+			 dy = 1;
+		}
+		else
+		{
+			Height = BmpInfo.biHeight;
+			 yStart = Height - 1;
+			 yend = -1;
+			 dy = -1;
+		}
+
+		assert(BmpInfo.biBitCount == 24 || BmpInfo.biBitCount == 32);
+		assert(BmpInfo.biCompression == BI_RGB);
+
+		bool BitCount32 = false;
+		if (BmpInfo.biBitCount == 32)
+		{
+			BitCount32 = true;
+		}
+
+		Ppixel = new Color[Width * Height];
+
+		BMPFileStruct.seekg(BMPFile.bfOffBits);
+
+		int Paddingoffset = (4 - (Width * 3) % 4) % 4;
+
+		BMPFileStruct.seekg(BMPFile.bfOffBits);
+
+		for (int y = yStart; y != yend; y += dy) {
+
+			for (int x = 0; x < Width; x++) {
+
+				PutPixel(x, y, Color(BMPFileStruct.get(), BMPFileStruct.get(), BMPFileStruct.get()));
+				if (BitCount32) {
+					BMPFileStruct.seekg(1, std::ios::cur);
+				}
+			}
+			if (!BitCount32) {
+				BMPFileStruct.seekg(Paddingoffset, std::ios::cur);
+			}
+		}
+
+	}
 }
 
 Surface::Surface(const Surface& rhs)

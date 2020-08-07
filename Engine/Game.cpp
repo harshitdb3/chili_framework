@@ -22,6 +22,7 @@
 #include "Game.h"
 #include "Colors.h"
 #include "Surface.h"
+#include "Mouse.h"
 
 
 Game::Game( MainWindow& wnd )
@@ -29,16 +30,6 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd )
 {
-   	for (int y = 0; y < Surf.GetHeight(); y++) 
-	{
-
-		for (int x = 0; x < Surf.GetWidth(); x++) 
-		{
-			Surf.PutPixel(x, y, Color((x-25)*(x-25) + (y-25)*(y-25),
-				(x - 50)*(x - 50) + (y - 50)*(y - 50),
-				(x - 75)*(x - 75) + (y - 75)*(y - 75)));
-		}
-	}
 
 }
 
@@ -56,5 +47,5 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-	gfx.DrawSprite(200, 200, Surf);
+	gfx.DrawSprite(wnd.mouse.GetPosX(), wnd.mouse.GetPosY(), {96,128,96,146}, Surf,Colors::Magenta);
 }
