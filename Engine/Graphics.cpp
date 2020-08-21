@@ -254,6 +254,11 @@ Graphics::~Graphics()
 	if( pImmediateContext ) pImmediateContext->ClearState();
 }
 
+RectI Graphics::GetClampRes()
+{
+	return {0,ScreenWidth,0,ScreenHeight};
+}
+
 void Graphics::EndFrame()
 {
 	HRESULT hr;
@@ -312,7 +317,7 @@ void Graphics::BeginFrame()
 void Graphics::PutPixel( int x,int y,Color c )
 {
 	assert( x >= 0 );
-	assert( x < int( Graphics::ScreenWidth ) );
+	assert( x < int( Graphics::ScreenWidth ));
 	assert( y >= 0 );
 	assert( y < int( Graphics::ScreenHeight ) );
 	pSysBuffer[Graphics::ScreenWidth * y + x] = c;
@@ -325,30 +330,110 @@ void Graphics::DrawSprite(int x, int y, const Surface& s)
 	for (int sy = 0; sy < Height; sy++) {
 
 		for (int sx = 0; sx < Width; sx++) {
-			PutPixel(x + sx, x + sy, s.GetPixel(sx, sy));
+			PutPixel(x + sx, y + sy, s.GetPixel(sx, sy));
 		}
 	}
 
 }
 
-void Graphics::DrawSprite(int x, int y, const RectI & sourcerect, const Surface & s, const Color& chroma)
+void Graphics::DrawSprite(int x, int y, RectI  sourcerect, const RectI& ClampOn, const Surface & s,  Color chroma)
+{
+
+
+	assert(sourcerect.top >= 0);
+	assert(sourcerect.bottom <= s.GetHeight());
+	assert(sourcerect.left >= 0);
+	assert(sourcerect.right <= s.GetWidth());
+
+	if (x < ClampOn.left)
+	{
+		sourcerect.left += ClampOn.left - x;
+		x = ClampOn.left;
+
+	}
+	if (y < ClampOn.top)
+	{
+		sourcerect.top += ClampOn.top - y;
+		y = ClampOn.top;
+
+	}
+	if (x + sourcerect.GetWidth() > ClampOn.right)
+	{
+
+		sourcerect.right -= x + sourcerect.GetWidth() - ClampOn.right;
+
+
+	}
+	if (y + sourcerect.GetHeight() > ClampOn.bottom)
+	{
+
+		sourcerect.bottom -= y + sourcerect.GetHeight() - ClampOn.bottom;
+
+
+	}
+
+
+	for (int sy = sourcerect.top; sy < sourcerect.bottom; sy++) {
+
+		for (int sx = sourcerect.left; sx < sourcerect.right; sx++) {
+
+			const Color SrcColor = s.GetPixel(sx, sy);
+			if (SrcColor != chroma) {
+				PutPixel(x + sx - sourcerect.left, y + sy - sourcerect.top, SrcColor);
+			}
+		}
+	}
+
+
+}
+
+void Graphics::DrawSpriteWithoutChroma(int x, int y, RectI sourcerect, const RectI& ClampOn, const Surface & s)
 {
 	assert(sourcerect.top >= 0);
 	assert(sourcerect.bottom <= s.GetHeight());
 	assert(sourcerect.left >= 0);
 	assert(sourcerect.right <= s.GetWidth());
+
+	if (x < ClampOn.left)
+	{
+		sourcerect.left += ClampOn.left - x;
+		x = ClampOn.left;
+
+	}
+	if (y < ClampOn.top)
+	{
+		sourcerect.top += ClampOn.top - y;
+		y = ClampOn.top;
+
+	}
+	if (x + sourcerect.GetWidth() > ClampOn.right)
+	{
+
+		sourcerect.right -= x + sourcerect.GetWidth() - ClampOn.right;
+
+
+	}
+	if (y + sourcerect.GetHeight() > ClampOn.bottom)
+	{
+
+		sourcerect.bottom -= y + sourcerect.GetHeight() - ClampOn.bottom;
+
+
+	}
+
 	
-	for (int sy = sourcerect.top; sy < sourcerect.bottom; sy++) {
+		for (int sy = sourcerect.top; sy < sourcerect.bottom; sy++) {
 
-		for (int sx = sourcerect.left; sx < sourcerect.right; sx++) {
+			for (int sx = sourcerect.left; sx < sourcerect.right; sx++) {
 
-			//Color chroma = Colors::Magenta;
-			const Color SrcColor = s.GetPixel(sx, sy);
-			if (SrcColor != chroma){
-				PutPixel(x + sx - sourcerect.left, y + sy - sourcerect.top,SrcColor);
+
+				const Color SrcColor = s.GetPixel(sx, sy);
+
+				PutPixel(x + sx - sourcerect.left, y + sy - sourcerect.top, s.GetPixel(sx, sy));
+
 			}
 		}
-	}
+	
 
 }
 

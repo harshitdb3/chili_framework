@@ -23,6 +23,7 @@
 #include "Colors.h"
 #include "Surface.h"
 #include "Mouse.h"
+#include "animation.h"
 
 
 Game::Game( MainWindow& wnd )
@@ -43,9 +44,29 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	Vec2 dir = { 0.0f,0.0f };
+	if(wnd.kbd.KeyIsPressed(VK_UP))
+	{
+		dir.y -= 1.0f;
+	}
+	if (wnd.kbd.KeyIsPressed(VK_DOWN))
+	{
+		dir.y += 1.0f;
+	}
+	if (wnd.kbd.KeyIsPressed(VK_LEFT))
+	{
+		dir.x -= 1.0f;
+	}
+	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
+	{
+		dir.x += 1.0f;
+	}
+	link.SetDirection(dir);
+	link.Update(ft.Mark());
+
 }
 
 void Game::ComposeFrame()
 {
-	gfx.DrawSprite(wnd.mouse.GetPosX(), wnd.mouse.GetPosY(), {96,128,96,146}, Surf,Colors::Magenta);
+	link.Draw(gfx);
 }

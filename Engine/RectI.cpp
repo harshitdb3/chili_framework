@@ -65,3 +65,13 @@ int RectI::GetHeight(const RectI& rect) const
 
 	return (rect.bottom - rect.top);
 }
+
+int RectI::GetWidth()
+{
+	return (left - right);
+}
+
+int RectI::GetHeight()
+{
+	return (bottom - top);
+}

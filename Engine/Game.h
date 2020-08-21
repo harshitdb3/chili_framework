@@ -24,7 +24,9 @@
 #include "Mouse.h"
 #include "Graphics.h"
 #include"Surface.h"
-
+#include "animation.h"
+#include"FrameTimer.h"
+#include "Character.h"
 class Game
 {
 public:
@@ -32,6 +34,7 @@ public:
 	Game( const Game& ) = delete;
 	Game& operator=( const Game& ) = delete;
 	void Go();
+
 private:
 	void ComposeFrame();
 	void UpdateModel();
@@ -43,9 +46,10 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
+	FrameTimer ft;
 
+	Character link = Character({ 100.0f,100.0f });
 
-	Surface Surf = Surface("marle32x48.bmp");
 	/********************************/
 	
 };

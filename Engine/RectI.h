@@ -17,6 +17,8 @@ public:
 	Vei2 GetCenter() const;
 	int GetWidth(const RectI& rect) const;
 	int GetHeight(const RectI& rect) const;
+	int GetWidth();
+	int GetHeight();
 public:
 	int left;
 	int right;
