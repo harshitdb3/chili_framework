@@ -387,6 +387,56 @@ void Graphics::DrawSprite(int x, int y, RectI  sourcerect, const RectI& ClampOn,
 
 }
 
+void Graphics::DrawSpriteSubstitute(int x, int y, RectI sourcerect, const RectI & ClampOn, const Surface & s, Color Substitute, Color chroma)
+{
+
+	assert(sourcerect.top >= 0);
+	assert(sourcerect.bottom <= s.GetHeight());
+	assert(sourcerect.left >= 0);
+	assert(sourcerect.right <= s.GetWidth());
+
+	if (x < ClampOn.left)
+	{
+		sourcerect.left += ClampOn.left - x;
+		x = ClampOn.left;
+
+	}
+	if (y < ClampOn.top)
+	{
+		sourcerect.top += ClampOn.top - y;
+		y = ClampOn.top;
+
+	}
+	if (x + sourcerect.GetWidth() > ClampOn.right)
+	{
+
+		sourcerect.right -= x + sourcerect.GetWidth() - ClampOn.right;
+
+
+	}
+	if (y + sourcerect.GetHeight() > ClampOn.bottom)
+	{
+
+		sourcerect.bottom -= y + sourcerect.GetHeight() - ClampOn.bottom;
+
+
+	}
+
+
+	for (int sy = sourcerect.top; sy < sourcerect.bottom; sy++) {
+
+		for (int sx = sourcerect.left; sx < sourcerect.right; sx++) {
+
+			const Color SrcColor = s.GetPixel(sx, sy);
+			if (SrcColor != chroma) {
+				PutPixel(x + sx - sourcerect.left, y + sy - sourcerect.top, Substitute);
+			}
+		}
+	}
+
+
+}
+
 void Graphics::DrawSpriteWithoutChroma(int x, int y, RectI sourcerect, const RectI& ClampOn, const Surface & s)
 {
 	assert(sourcerect.top >= 0);

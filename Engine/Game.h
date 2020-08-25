@@ -27,6 +27,7 @@
 #include "animation.h"
 #include"FrameTimer.h"
 #include "Character.h"
+#include "Font.h"
 class Game
 {
 public:
@@ -49,7 +50,8 @@ private:
 	FrameTimer ft;
 
 	Character link = Character({ 100.0f,100.0f });
-
+	
+	Font font = std::string("Fixedsys16x28.bmp");
 	/********************************/
 	
 };

@@ -69,4 +69,5 @@ void Game::UpdateModel()
 void Game::ComposeFrame()
 {
 	link.Draw(gfx);
+	font.DrawFont("Fuck", { wnd.mouse.GetPosX(),wnd.mouse.GetPosY() }, gfx);
 }
