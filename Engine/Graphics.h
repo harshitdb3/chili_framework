@@ -58,6 +58,7 @@ public:
 		PutPixel( x,y,{ unsigned char( r ),unsigned char( g ),unsigned char( b ) } );
 	}
 	void PutPixel( int x,int y,Color c );
+	Color GetPixel(int x, int y);
 	void DrawSprite(int x, int y, const Surface& s);
 	void DrawSprite(int x, int y, RectI sourcerect,const RectI& ClampOn, const Surface& s, Color chroma = Colors::Magenta);
 	void DrawSpriteSubstitute(int x, int y, RectI sourcerect, const RectI& ClampOn, const Surface& s,Color Substitute, Color chroma = Colors::Magenta);

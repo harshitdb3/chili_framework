@@ -323,6 +323,11 @@ void Graphics::PutPixel( int x,int y,Color c )
 	pSysBuffer[Graphics::ScreenWidth * y + x] = c;
 }
 
+Color Graphics::GetPixel(int x, int y)
+{
+	return Color(pSysBuffer[Graphics::ScreenWidth * y + x] );
+}
+
 void Graphics::DrawSprite(int x, int y, const Surface& s)
 {
 	const int Width = s.GetWidth();
@@ -429,7 +434,15 @@ void Graphics::DrawSpriteSubstitute(int x, int y, RectI sourcerect, const RectI 
 
 			const Color SrcColor = s.GetPixel(sx, sy);
 			if (SrcColor != chroma) {
-				PutPixel(x + sx - sourcerect.left, y + sy - sourcerect.top, Substitute);
+
+				
+				const Color Destination = GetPixel(x + sx - sourcerect.left, y + sy - sourcerect.top);
+				const Color Final_Destination = { unsigned char((Substitute.GetR() + Destination.GetR()) / 2),
+					                              unsigned char((Substitute.GetG() + Destination.GetG()) / 2),
+					                              unsigned char((Substitute.GetB() + Destination.GetB()) / 2)
+				};
+
+				PutPixel(x + sx - sourcerect.left, y + sy - sourcerect.top,Final_Destination);
 			}
 		}
 	}

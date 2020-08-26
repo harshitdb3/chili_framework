@@ -68,6 +68,7 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-	link.Draw(gfx);
 	font.DrawFont("Harshit \nis a bad boy", { wnd.mouse.GetPosX(),wnd.mouse.GetPosY() }, gfx);
+	link.Draw(gfx);
+	
 }
