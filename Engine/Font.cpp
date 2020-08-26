@@ -32,8 +32,15 @@ void Font::DrawFont(const std::string& text, const Vei2& pos, Graphics& gfx)
 	Vei2 TempPos = pos;
 	for(auto c : text)
 	{
+		if (c != '\n') {
 		
-		gfx.DrawSpriteSubstitute(TempPos.x, TempPos.y, GetFontPixel(c), { 0,800,0,600 }, Sprite,Substitute = Colors::Red,chroma);
-		TempPos.x += FontWidth;
+			gfx.DrawSpriteSubstitute(TempPos.x, TempPos.y, GetFontPixel(c), { 0,800,0,600 }, Sprite, Substitute = Colors::Red, chroma);
+			TempPos.x += FontWidth;
+		}
+		else {
+			TempPos.y += FontHeight;
+			TempPos.x = pos.x;
+			continue;
+		}
 	}
 }
