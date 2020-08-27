@@ -21,7 +21,7 @@ private:
 
 public:
 	Character(const Vec2 pos);
-	void SetDirection(Vec2 dir);
+	void SetDirection(const Vec2& dir);
 	void Draw(Graphics &gfx) const;
 	void Update(float dt);
 private:

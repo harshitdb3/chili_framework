@@ -1,5 +1,5 @@
 #include "Font.h"
-#include "Vei2.h"
+#include "Vec2.h"
 #include"Surface.h"
 #include<cassert>
 #include"Colors.h"

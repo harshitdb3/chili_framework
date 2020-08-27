@@ -1,6 +1,7 @@
 #include "Character.h"
 #include "animation.h"
 
+
 Character::Character(const Vec2 pos):
 	Sprite("link90x90.bmp"),pos(pos)
 {
@@ -16,7 +17,7 @@ Character::Character(const Vec2 pos):
 	}
 }
 
-void Character::SetDirection(Vec2 dir)
+void Character::SetDirection(const Vec2& dir)
 {
 	if(dir.x < 0.0f )
 	{

@@ -24,6 +24,7 @@
 #include "Surface.h"
 #include "Mouse.h"
 #include "animation.h"
+#include "Vec2.h"
 
 
 Game::Game( MainWindow& wnd )
@@ -31,6 +32,8 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd )
 {
+	Vei2 v;
+	auto v2 = v.GetNormalized();
 
 }
 
@@ -68,7 +71,6 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-	font.DrawFont("Harshit \nis a bad boy", { wnd.mouse.GetPosX(),wnd.mouse.GetPosY() }, gfx);
 	link.Draw(gfx);
-	
+	font.DrawFont("Harshit \nis a bad boy", { wnd.mouse.GetPosX(),wnd.mouse.GetPosY() }, gfx);
 }
