@@ -17,13 +17,13 @@ Font::Font(std::string& Letter,Color chroma)
 
 }
 
-RectI Font::GetFontPixel(char c)
+RectI Font::GetFontPixel(char c) const
 {
 	
 	const int FinalCopy = c - ' ';
 	
-	int yGlymp = FinalCopy/ HorFontsNumbers;
-	int xGlymp = FinalCopy % HorFontsNumbers;
+	const int yGlymp = FinalCopy/ HorFontsNumbers;
+	const int xGlymp = FinalCopy % HorFontsNumbers;
 	return RectI({xGlymp * FontWidth,yGlymp * FontHeight},FontWidth,FontHeight);
 }
 
